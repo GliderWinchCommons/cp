@@ -190,7 +190,7 @@ public class MasterController
         try
         {            
             // hub-server: start PS first when using 
-            Socket connection = new Socket("192.168.1.113", 32123);
+            Socket connection = new Socket("147.222.165.75", 32123);
             
             //  MC local server: start this first when using
             //ServerSocket serverSocket = new ServerSocket(32123);
@@ -326,7 +326,7 @@ public class MasterController
                 switch (state)
                 {
                     case 0: // prep                        
-                        if (cp.getSlider() < 0.1)
+                        if (cp.getSlider() < 0.05 && cp.getInitButton() == true)
                         {
                             state = 1; // going to armed state
                             cp.setStateLed(1);
@@ -336,8 +336,7 @@ public class MasterController
                         break;
                     case 1: // armed
                         
-                        if ((parametersRequestedFlag == 0) 
-                                && (cp.getSlider() > 0.9))
+                        if ((parametersRequestedFlag == 0) && (cp.getSlider() > 0.95) && (cp.getInitButton() == true))
                         {
                             // request launch parameters
                             outstream.write(requestMessage.msg_prep());
