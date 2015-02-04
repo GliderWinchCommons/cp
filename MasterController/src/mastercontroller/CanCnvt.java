@@ -20,7 +20,8 @@ import java.lang.Math;
  *
  * Handle the conversion between binary and ascii/hex format CAN messages.
  *
- * @author deh
+ * @authors deh
+ *          Johnny White
  */
 /*
  *   Decode methods for extracting data from payload extneded by
@@ -657,7 +658,7 @@ public class CanCnvt
      */
     public int set_byte(int n, int offset)
     {
-        if (offset > 7 )
+        if (offset > 8 )
         {
             return -1;
         } else
