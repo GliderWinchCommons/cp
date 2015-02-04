@@ -1,5 +1,4 @@
 
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -155,9 +154,12 @@ public class MasterController
         CanCnvt torqueMessage = new CanCnvt();
         torqueMessage.id = TORQUE_MESSAGE_ID;
         torqueMessage.set_byte(0, 2); // max cable speed, not implemented
+        
 
         CanCnvt requestMessage = new CanCnvt();
         requestMessage.id = PARAM_REQUEST_MESSAGE_ID;
+        
+        CanCnvt gcpMessage = new CanCnvt();
 
         //  for debug use to insert extra messages
         CanCnvt temp = new CanCnvt();
@@ -174,6 +176,7 @@ public class MasterController
         int paramReceivedFlag = 0;
         int parametersRequestedFlag = 0;
         int launchResetFlag = 1;
+        int emergencyStopFlag = 0;
         int startProfileTics = 0;
         int startRampTics = 0;
         float startRampTension = 0;
@@ -204,7 +207,17 @@ public class MasterController
             nextStepTime = System.currentTimeMillis();
 
             while (true)
-            {   // endless loop    
+            {   // endless loop
+                //Interactions with the control panel interface
+//              if (cp.emergencyStopButton.isSelected())
+//              {
+//                  emergencyStopFlag = 1;
+//              }
+                
+//              if (cp.armButton.isEnabled())
+//              {
+//                    
+//              }
                 if (launchResetFlag == 1)   // init variables for launch
                 {
                 
@@ -326,7 +339,7 @@ public class MasterController
                 switch (state)
                 {
                     case 0: // prep                        
-                        if (cp.getSlider() < 0.05 && cp.getInitButton() == true)
+                        if (cp.getSlider() < 0.1)
                         {
                             state = 1; // going to armed state
                             cp.setStateLed(1);
@@ -336,7 +349,8 @@ public class MasterController
                         break;
                     case 1: // armed
                         
-                        if ((parametersRequestedFlag == 0) && (cp.getSlider() > 0.95) && (cp.getInitButton() == true))
+                        if ((parametersRequestedFlag == 0) 
+                                && (cp.getSlider() > 0.9))
                         {
                             // request launch parameters
                             outstream.write(requestMessage.msg_prep());
@@ -477,6 +491,7 @@ public class MasterController
                         break;
                     
                 }
+
                 tension *= cp.getSlider(); // scale by slider 
                 torque = tension * TENSION_TO_TORQUE;
                 //  filter the torque with about 1 Hz bandwidth
@@ -500,6 +515,42 @@ public class MasterController
                 //  ceiling the sleep period
                 //Thread.sleep((int) (remainingTimeMillis + 1));
                 //}
+                if (cp.sasSwitch.isSelected())
+                {
+                    gcpMessage.set_byte(1, 8);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
+                if (cp.sasSwitch.isSelected() == false)
+                {
+                    gcpMessage.set_byte(0, 8);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
+                if (cp.initButton.isSelected())
+                {
+                    gcpMessage.set_byte(1, 6);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
+                if (cp.prepRecButton.isSelected())
+                {
+                    gcpMessage.set_byte(1, 6);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
+                if (cp.getSlider() < 0.1)
+                {
+                    gcpMessage.set_byte(1, 5);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
+                if (cp.getSlider() < 0.9)
+                {
+                    gcpMessage.set_byte(1, 2);
+                    outstream.write(gcpMessage.msg_prep());
+                    outstream.flush();
+                }
             }
 
         } catch (IOException e)
