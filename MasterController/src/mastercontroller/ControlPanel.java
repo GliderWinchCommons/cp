@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package mastercontroller;
 
+/**
+ *
+ * @author Johnny White
+ */
 import java.awt.Color;
 
 /**
@@ -30,7 +33,7 @@ public class ControlPanel extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//
-    private void initComponents(){
+    public void initComponents(){
 
         states = new javax.swing.ButtonGroup();
         prepLed = new javax.swing.JRadioButton();
@@ -252,21 +255,21 @@ public class ControlPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//
-    private javax.swing.JRadioButton armedLed;
-    private javax.swing.JRadioButton constantLed;
-    private javax.swing.JSlider controlLever;
-    private javax.swing.JRadioButton prepLed;
-    private javax.swing.JRadioButton profileLed;
-    private javax.swing.JRadioButton rampLed;
-    private javax.swing.JRadioButton recoveryLed;
-    private javax.swing.JToggleButton initButton;
-    private javax.swing.JButton prepRecButton;
+    public javax.swing.JRadioButton armedLed;
+    public javax.swing.JRadioButton constantLed;
+    public javax.swing.JSlider controlLever;
+    public javax.swing.JRadioButton prepLed;
+    public javax.swing.JRadioButton profileLed;
+    public javax.swing.JRadioButton rampLed;
+    public javax.swing.JRadioButton recoveryLed;
+    public javax.swing.JToggleButton initButton;
+    public javax.swing.JButton prepRecButton;
     
-    private javax.swing.JButton odometerButton;
-    private javax.swing.JButton tensionButton;
-    private javax.swing.JToggleButton sasSwitch;
-    private javax.swing.JToggleButton gabSwitch;
-    private javax.swing.JButton emergencyStop;
-    private javax.swing.ButtonGroup states;
+    public javax.swing.JButton odometerButton;
+    public javax.swing.JButton tensionButton;
+    public javax.swing.JToggleButton sasSwitch;
+    public javax.swing.JToggleButton gabSwitch;
+    public javax.swing.JButton emergencyStop;
+    public javax.swing.ButtonGroup states;
     // End of variables declaration                   
 }
