@@ -16,14 +16,22 @@ public class MasterController
     // CANbus ID DEFINITIONS
     static final int ID_OFFSET = 1 << 21;
     static final int TIME_MESSAGE_ID = 256 * ID_OFFSET;             // 0x200
-    static final int STATE_MESSAGE_ID = 304 * ID_OFFSET;            // 0x260
-    static final int TORQUE_MESSAGE_ID = 300 * ID_OFFSET;           // 0x258
     static final int MOTOR_MESSAGE_ID = 296 * ID_OFFSET;            // 0x250
-    static final int CONTROL_LEVER_MESSAGE_ID = 641 * ID_OFFSET;    // 0x502
+    static final int TORQUE_MESSAGE_ID = 300 * ID_OFFSET;           // 0x258
+    static final int STATE_MESSAGE_ID = 304 * ID_OFFSET;            // 0x260
+    static final int LAUNCH_PARAM_MESSAGE_ID = 327 * ID_OFFSET;     // 0x28e
     static final int TENSION_MESSAGE_ID = 448 * ID_OFFSET;          // 0x380
     static final int CABLE_ANGLE_MESSAGE_ID = 464 * ID_OFFSET;      // 0x3a0
-    static final int LAUNCH_PARAM_MESSAGE_ID = 327 * ID_OFFSET;     // 0x28e
     static final int PARAM_REQUEST_MESSAGE_ID = 312 * ID_OFFSET;    // 0x270
+    
+    
+    // Control Lever CANbus Definitions
+    static final int CP_CONTROL_LEVER_RMT = 328 * ID_OFFSET;        // 0x290
+    static final int CP_CONTROL_LEVER_LCL = 329 * ID_OFFSET;        // 0x292
+    static final int CP_CONTROL_LEVER_INPUTS_RMT = 330 * ID_OFFSET; // 0x294
+    static final int CP_CONTROL_LEVER_INPUTS_LCL = 331 * ID_OFFSET; // 0x296
+    static final int CONTROL_LEVER_MESSAGE_ID = 641 * ID_OFFSET;    // 0x502    
+ 
 
     static final float TICSPERSECOND = 64;
     static final float SIMULATIONSTEPTIME = ((float) 1.0) / TICSPERSECOND;
@@ -115,7 +123,7 @@ public class MasterController
                 outstream.write(stateMessage.msg_prep());
                 break;
         }
-        outstream.flush();
+//        outstream.flush();
     }
 
     public static void main(String args[]) throws InterruptedException
@@ -145,6 +153,7 @@ public class MasterController
         float torque;
         float filt_torque = 0;
         float receivedTension = 0;
+        float recievedTime;
         float receivedMotorSpeed;
         float receivedCableSpeed = 0;
         float receivedCableAngle;
@@ -159,7 +168,13 @@ public class MasterController
         CanCnvt requestMessage = new CanCnvt();
         requestMessage.id = PARAM_REQUEST_MESSAGE_ID;
         
-        CanCnvt gcpMessage = new CanCnvt();
+        CanCnvt gcpMessageControlLever = new CanCnvt();
+        gcpMessageControlLever.id = CP_CONTROL_LEVER_RMT;
+        gcpMessageControlLever.dlc = 2;
+        
+        CanCnvt gcpMessageInputs = new CanCnvt();
+        gcpMessageInputs.id = CP_CONTROL_LEVER_INPUTS_RMT;
+        gcpMessageInputs.dlc = 2;
 
         //  for debug use to insert extra messages
         CanCnvt temp = new CanCnvt();
@@ -205,19 +220,12 @@ public class MasterController
             OutputStreamWriter outstream = new OutputStreamWriter(connection.getOutputStream());
 
             nextStepTime = System.currentTimeMillis();
-
+ 
             while (true)
             {   // endless loop
-                //Interactions with the control panel interface
-//              if (cp.emergencyStopButton.isSelected())
-//              {
-//                  emergencyStopFlag = 1;
-//              }
+                //Interactions with the control panel interface   
                 
-//              if (cp.armButton.isEnabled())
-//              {
-//                    
-//              }
+               
                 if (launchResetFlag == 1)   // init variables for launch
                 {
                 
@@ -260,19 +268,19 @@ public class MasterController
                 }
 
                 //send time message and advance time one tic
-                elapsedTics += 1;
-                fracTime = (byte) (elapsedTics % TICSPERSECOND);
-                timeMessage.set_byte(fracTime, 0); // time
-                if (fracTime == 0)
-                {
-                    System.out.println("Second count: " + elapsedTics / TICSPERSECOND);
-                    timeMessage.set_int((int) (elapsedTics / TICSPERSECOND), 1);
-                }
-                outstream.write(timeMessage.msg_prep());
-                outstream.flush();
-                timeMessage.dlc = 1;
-                //  next Time message time                   
-                nextStepTime += STEPTIMEMILLIS;
+//                elapsedTics += 1;
+//                fracTime = (byte) (elapsedTics % TICSPERSECOND);
+//                timeMessage.set_byte(fracTime, 0); // time
+//                if (fracTime == 0)
+//                {
+//                    System.out.println("Second count: " + elapsedTics / TICSPERSECOND);
+//                    timeMessage.set_int((int) (elapsedTics / TICSPERSECOND), 1);
+//                }
+//                outstream.write(timeMessage.msg_prep());
+//                //outstream.flush();
+//                timeMessage.dlc = 1;
+//                //  next Time message time                   
+//                nextStepTime += STEPTIMEMILLIS;
 
                 //  read messages until tension and motor messages are received
                 //  note: if there were other messages after the last tension 
@@ -281,9 +289,9 @@ public class MasterController
                 //  threading the read operations in the future
                 // System.out.println("System Time before reads (ms): "
                 //         + (long) System.currentTimeMillis());
-                while ((tensionMessageFlag == 0)
-                        || (speedMessageFlag == 0))
-                {
+                //while ((tensionMessageFlag == 0)
+                //        || (speedMessageFlag == 0))
+                //{
 
                     //  wait for input message    
                     if ((msg = instream.readLine()) == null)
@@ -300,6 +308,12 @@ public class MasterController
                         // System.out.println("CANid: " + canIn.id / ID_OFFSET);
                         switch (canIn.id)
                         {
+                            case TIME_MESSAGE_ID:
+                                gcpMessageControlLever.set_halffloat(cp.getSlider(), 0);
+                                gcpMessageInputs.set_short(cp.getGCPInteraction(), 0);
+                                outstream.write(gcpMessageControlLever.msg_prep());
+                                outstream.write(gcpMessageInputs.msg_prep());
+                                outstream.flush();
                             case TENSION_MESSAGE_ID:
                                 receivedTension = (canIn.get_short(1) - tensionOffset)
                                         * tensionScale;
@@ -331,7 +345,7 @@ public class MasterController
                                 break;
                         }
                     }
-                }
+                //}
 
                 //System.out.println("System Time after reads (ms):  "
                 //        + (long) System.currentTimeMillis());
@@ -339,10 +353,11 @@ public class MasterController
                 switch (state)
                 {
                     case 0: // prep                        
-                        if (cp.getSlider() < 0.1)
+                        if (cp.getSlider() < 0.02)
                         {
+                            System.out.println("sucess");
                             state = 1; // going to armed state
-                            cp.setStateLed(1);
+                            //cp.setStateLed(1);
                             sendStateMessage(1, outstream);
                             //  System.out.println("Going to state: " + state);
                         }
@@ -350,11 +365,11 @@ public class MasterController
                     case 1: // armed
                         
                         if ((parametersRequestedFlag == 0) 
-                                && (cp.getSlider() > 0.9))
+                                && (cp.getSlider() > 0.98))
                         {
                             // request launch parameters
                             outstream.write(requestMessage.msg_prep());
-                            outstream.flush();
+//                            outstream.flush();
                             parametersRequestedFlag = 1;
                         }
                         // when we get the response, start the simulation
@@ -363,7 +378,7 @@ public class MasterController
                             simulationStartTime = (double) (System.currentTimeMillis());
                             
                             state = 2;
-                            cp.setStateLed(2);
+                            //cp.setStateLed(2);
                             startProfileTics = elapsedTics;
                             sendStateMessage(2, outstream);
                             //  System.out.println("Going to state: " + state);
@@ -375,7 +390,7 @@ public class MasterController
                         {
                             state = 3;
                             peakCableSpeed = receivedCableSpeed;
-                            cp.setStateLed(3);
+                            //cp.setStateLed(3);
                             //  System.out.println("Going to state: " + state);
                         }
                         break;
@@ -390,7 +405,7 @@ public class MasterController
                             startRampTics = elapsedTics;
                             startRampTension = receivedTension;
                             sendStateMessage(4, outstream);
-                            cp.setStateLed(4);
+                            //cp.setStateLed(4);
                             //  System.out.println("Going to state: " + state);
                         }
                         break;
@@ -398,7 +413,7 @@ public class MasterController
                         if (elapsedTics - startRampTics > RAMP_TIME * TICSPERSECOND)
                         {
                             state = 5;
-                            cp.setStateLed(5);
+                            //cp.setStateLed(5);
                             sendStateMessage(5, outstream);
                             minCableSpeed = receivedCableSpeed;
                             //  System.out.println("Going to state: " + state);
@@ -414,7 +429,7 @@ public class MasterController
                         if (receivedCableSpeed > minCableSpeed + RELEASEDELTA)
                         {
                             state = 6;
-                            cp.setStateLed(6);
+                            //cp.setStateLed(6);
                             sendStateMessage(6, outstream);
                             //  System.out.println("Going to state: " + state);
                         }
@@ -424,7 +439,7 @@ public class MasterController
                         if (receivedCableSpeed < ZERO_CABLE_SPEED_TOLERANCE)
                         {
                             state = 0;
-                            cp.setStateLed(0);
+                            //cp.setStateLed(0);
                             sendStateMessage(0, outstream);
                             //  System.out.println("Going to state: " + state);
                             launchResetFlag = 1;                            
@@ -492,15 +507,15 @@ public class MasterController
                     
                 }
 
-                tension *= cp.getSlider(); // scale by slider 
-                torque = tension * TENSION_TO_TORQUE;
+                //tension *= cp.getSlider(); // scale by slider 
+                //torque = tension * TENSION_TO_TORQUE;
                 //  filter the torque with about 1 Hz bandwidth
-                filt_torque += (torque - filt_torque) / 8;
+                //filt_torque += (torque - filt_torque) / 8;
 
-                torqueMessage.set_short((short) (filt_torque / torqueScale), 0); // torque
-                outstream.write(torqueMessage.msg_prep());
-                outstream.flush();
-                tensionMessageFlag = speedMessageFlag = 0;
+                //torqueMessage.set_short((short) (filt_torque / torqueScale), 0); // torque
+                //outstream.write(torqueMessage.msg_prep());
+//                outstream.flush();
+                //tensionMessageFlag = speedMessageFlag = 0;
                 //System.out.println("System Time after Torque (ms): " 
                 // + (long) System.currentTimeMillis() + "  "
                 // + tensionMessageFlag + speedMessageflag);
@@ -515,42 +530,7 @@ public class MasterController
                 //  ceiling the sleep period
                 //Thread.sleep((int) (remainingTimeMillis + 1));
                 //}
-                if (cp.sasSwitch.isSelected())
-                {
-                    gcpMessage.set_byte(1, 8);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
-                if (cp.sasSwitch.isSelected() == false)
-                {
-                    gcpMessage.set_byte(0, 8);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
-                if (cp.initButton.isSelected())
-                {
-                    gcpMessage.set_byte(1, 6);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
-                if (cp.prepRecButton.isSelected())
-                {
-                    gcpMessage.set_byte(1, 6);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
-                if (cp.getSlider() < 0.1)
-                {
-                    gcpMessage.set_byte(1, 5);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
-                if (cp.getSlider() < 0.9)
-                {
-                    gcpMessage.set_byte(1, 2);
-                    outstream.write(gcpMessage.msg_prep());
-                    outstream.flush();
-                }
+
             }
 
         } catch (IOException e)

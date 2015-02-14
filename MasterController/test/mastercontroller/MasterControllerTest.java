@@ -61,5 +61,18 @@ public class MasterControllerTest {
 //        
 //    }
 
+    /**
+     * Test of <error> method, of class MasterController.
+     */
+//    @Test
+//    public void test<error>() {
+//        System.out.println("<error>");
+//        Object = null;
+//        MasterController instance = new MasterController();
+//        instance.<error>(<error>);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+
     
 }
