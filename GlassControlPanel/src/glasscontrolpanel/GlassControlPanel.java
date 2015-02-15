@@ -33,7 +33,7 @@ public class GlassControlPanel
     static final int CP_CONTROL_LEVER_INPUTS_LCL = 331 * ID_OFFSET; // 0x296
     static final int CONTROL_LEVER_MESSAGE_ID = 641 * ID_OFFSET;    // 0x502
     ////////////////////////////////////////////////
-    static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    static final String HUBSERVER_ADDRESS = "127.0.0.1";       //HUB-SERVER
     static final int HUBSERVER_PORT = 32123;
     ////////////////////////////////////////////////
     //
