@@ -40,79 +40,76 @@ public class ControlPanel extends javax.swing.JFrame {
      */
     
 
-    public void initComponents(){
+    private void initComponents() {
 
-        states = new javax.swing.ButtonGroup();
-        prepLed = new javax.swing.JRadioButton();
-        armedLed = new javax.swing.JRadioButton();
-        profileLed = new javax.swing.JRadioButton();
-        rampLed = new javax.swing.JRadioButton();
-        constantLed = new javax.swing.JRadioButton();
-        recoveryLed = new javax.swing.JRadioButton();
-        controlLever = new javax.swing.JSlider();
         initButton = new javax.swing.JToggleButton();
-        prepRecButton = new javax.swing.JButton();
-        odometerButton = new javax.swing.JButton();
+        prepRecButton = new javax.swing.JToggleButton();
+        controlLever = new javax.swing.JSlider();
         tensionButton = new javax.swing.JButton();
+        odometerButton = new javax.swing.JButton();
         sasSwitch = new javax.swing.JToggleButton();
         gSwitch = new javax.swing.JToggleButton();
         brakeSwitch = new javax.swing.JToggleButton();
         emergencyStop = new javax.swing.JButton();
+        stateDiagramPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        states.add(prepLed);
-        prepLed.setSelected(true);
-        prepLed.setText("Prep");
-        prepLed.setForeground(Color.red);
+        initButton.setBackground(new java.awt.Color(255, 0, 0));
+        initButton.setText("Arm/Disarm");
+        initButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                initButtonActionPerformed(evt);
+            }
+        });
 
-        states.add(armedLed);
-        armedLed.setText("Armed");
-        armedLed.setForeground(Color.blue);
-
-        states.add(profileLed);
-        profileLed.setText("Profile");
-        profileLed.setForeground(Color.blue);
-        
-        states.add(rampLed);
-        rampLed.setText("Ramp");
-        rampLed.setForeground(Color.blue);
-
-        states.add(constantLed);
-        constantLed.setText("Constant");
-        constantLed.setForeground(Color.blue);
-
-        states.add(recoveryLed);
-        recoveryLed.setText("Recovery");
-        recoveryLed.setForeground(Color.blue);
-
-        initButton.setText("Arm Launch");
-        initButton.setSelected(false);
-        
-        prepRecButton.setText("Prep/Recieve");
-        prepRecButton.setSelected(false);
-        
-        odometerButton.setText("Odometer");
-        odometerButton.setSelected(false);
-        
-        tensionButton.setText("Tension");
-        tensionButton.setSelected(false);
-        
-        sasSwitch.setText("Safe-Active Switch");
-        sasSwitch.setSelected(false);
-        
-        gSwitch.setText("Guillotine Switch");
-        gSwitch.setSelected(false);
-        
-        brakeSwitch.setText("Brake Switch");
-        brakeSwitch.setSelected(false);
-        
-        emergencyStop.setText("Emergency Stop");
-        emergencyStop.setForeground(Color.red);
-        emergencyStop.setSelected(false);
+        prepRecButton.setBackground(new java.awt.Color(255, 255, 0));
+        prepRecButton.setText("Retrieve/Prep");
 
         controlLever.setOrientation(javax.swing.JSlider.VERTICAL);
-        controlLever.setValue(25);
+        controlLever.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        controlLever.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        tensionButton.setBackground(new java.awt.Color(255, 102, 0));
+        tensionButton.setText("Zero Tension");
+
+        odometerButton.setBackground(new java.awt.Color(255, 102, 0));
+        odometerButton.setText("Zero Odometer");
+        odometerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                odometerButtonActionPerformed(evt);
+            }
+        });
+
+        sasSwitch.setBackground(new java.awt.Color(0, 255, 255));
+        sasSwitch.setText("Safe/Operate");
+
+        gSwitch.setBackground(new java.awt.Color(204, 51, 255));
+        gSwitch.setText("Guillotine");
+        gSwitch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gSwitchActionPerformed(evt);
+            }
+        });
+
+        brakeSwitch.setBackground(new java.awt.Color(204, 51, 255));
+        brakeSwitch.setText("Brake");
+
+        emergencyStop.setBackground(new java.awt.Color(255, 0, 51));
+        emergencyStop.setText("Stop");
+
+        stateDiagramPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout stateDiagramPanelLayout = new javax.swing.GroupLayout(stateDiagramPanel);
+        stateDiagramPanel.setLayout(stateDiagramPanelLayout);
+        stateDiagramPanelLayout.setHorizontalGroup(
+            stateDiagramPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        stateDiagramPanelLayout.setVerticalGroup(
+            stateDiagramPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,79 +117,70 @@ public class ControlPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(recoveryLed)
-                    .addComponent(constantLed)
-                    .addComponent(rampLed)
-                    .addComponent(profileLed)
-                    .addComponent(prepLed)
-                    .addComponent(armedLed))
+                .addComponent(controlLever, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(controlLever, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(initButton)
-                    .addComponent(prepRecButton))
-                .addGap(18, 18, 18)
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(odometerButton)    
-                    .addComponent(tensionButton)) 
-                .addGap(18, 18, 18)
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sasSwitch)    
-                    .addComponent(gSwitch)
-                    .addComponent(brakeSwitch)
-                    .addComponent(emergencyStop))        
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 67, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sasSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(initButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(emergencyStop, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(prepRecButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(odometerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(brakeSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(gSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(stateDiagramPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(prepLed)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(stateDiagramPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(armedLed)
-                .addGap(4, 4, 4)
-                .addComponent(profileLed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rampLed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(constantLed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(recoveryLed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-            .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(initButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(prepRecButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-            .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(odometerButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(emergencyStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(gSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(brakeSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tensionButton)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-            .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(sasSwitch)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(gSwitch)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(brakeSwitch)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(emergencyStop))   
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(controlLever, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                    .addComponent(odometerButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(initButton)
+                    .addComponent(prepRecButton)
+                    .addComponent(sasSwitch))
+                .addGap(26, 26, 26))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(controlLever, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>                        
+
+    private void initButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+    }                                          
+
+    private void odometerButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        // TODO add your handling code here:
+    }                                              
+
+    private void gSwitchActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+    }                                       
 
     /**
      * @param args the command line arguments
@@ -205,20 +193,26 @@ public class ControlPanel extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("CDE/Modif".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                if (true) {
+                    javax.swing.UIManager.setLookAndFeel("Metal");
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ControlPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
-                new ControlPanel().setVisible(true);
+                new GCPanel().setVisible(true);
             }
         });
     }
@@ -264,56 +258,49 @@ public class ControlPanel extends javax.swing.JFrame {
         return (boolean) (prepRecButton.isSelected());
     }
     
-    public void setStateLed(int state) {
-        while (getInitButton() == true){
-            switch (state) {
-                case 0: // prep
-                    prepLed.setSelected(true);
-                    prepLed.setForeground(Color.red);
+//    public void setStateLed(int state) {
+//        while (getInitButton() == true){
+//            switch (state) {
+//                case 0: // prep
+//                    prepLed.setSelected(true);
+//                    prepLed.setForeground(Color.red);
+//
+//                    break;
+//                case 1: // armed
+//                    armedLed.setSelected(true);
+//                    armedLed.setForeground(Color.red);
+//                    break;
+//                case 2: // profile 1
+//                case 3: // profile 2
+//                    profileLed.setSelected(true);
+//                    profileLed.setForeground(Color.red);
+//                    break;
+//                case 4: // ramp
+//                    rampLed.setSelected(true);
+//                    rampLed.setForeground(Color.red);
+//                    break;
+//                case 5: // constant
+//                    constantLed.setSelected(true);
+//                    constantLed.setForeground(Color.red);
+//                    break;
+//                case 6: // recovery
+//                    recoveryLed.setSelected(true);
+//                    recoveryLed.setForeground(Color.red);
+//                    break;
+//            }
+//        }
+//    }
 
-                    break;
-                case 1: // armed
-                    armedLed.setSelected(true);
-                    armedLed.setForeground(Color.red);
-                    break;
-                case 2: // profile 1
-                case 3: // profile 2
-                    profileLed.setSelected(true);
-                    profileLed.setForeground(Color.red);
-                    break;
-                case 4: // ramp
-                    rampLed.setSelected(true);
-                    rampLed.setForeground(Color.red);
-                    break;
-                case 5: // constant
-                    constantLed.setSelected(true);
-                    constantLed.setForeground(Color.red);
-                    break;
-                case 6: // recovery
-                    recoveryLed.setSelected(true);
-                    recoveryLed.setForeground(Color.red);
-                    break;
-            }
-        }
-    }
-
-    // Variables declaration - do not modify//
-    public javax.swing.JRadioButton armedLed;
-    public javax.swing.JRadioButton constantLed;
-    public javax.swing.JSlider controlLever;
-    public javax.swing.JRadioButton prepLed;
-    public javax.swing.JRadioButton profileLed;
-    public javax.swing.JRadioButton rampLed;
-    public javax.swing.JRadioButton recoveryLed;
-    public javax.swing.JToggleButton initButton;
-    public javax.swing.JButton prepRecButton;
-    
-    public javax.swing.JButton odometerButton;
-    public javax.swing.JButton tensionButton;
-    public javax.swing.JToggleButton sasSwitch;
-    public javax.swing.JToggleButton gSwitch;
-    public javax.swing.JToggleButton brakeSwitch;
-    public javax.swing.JButton emergencyStop;
-    public javax.swing.ButtonGroup states;
-    // End of variables declaration                   
+    // Variables declaration - do not modify                     
+    private javax.swing.JToggleButton brakeSwitch;
+    private javax.swing.JSlider controlLever;
+    private javax.swing.JButton emergencyStop;
+    private javax.swing.JToggleButton gSwitch;
+    private javax.swing.JToggleButton initButton;
+    private javax.swing.JPanel stateDiagramPanel;
+    private javax.swing.JButton odometerButton;
+    private javax.swing.JToggleButton prepRecButton;
+    private javax.swing.JToggleButton sasSwitch;
+    private javax.swing.JButton tensionButton;
+    // End of variables declaration                       
 }
