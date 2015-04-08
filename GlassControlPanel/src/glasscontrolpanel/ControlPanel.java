@@ -9,7 +9,6 @@ package glasscontrolpanel;
  *
  * @author Johnny White
  */
-import java.awt.Color;
 
 /**
  *
@@ -51,7 +50,7 @@ public class ControlPanel extends javax.swing.JFrame {
         gSwitch = new javax.swing.JToggleButton();
         brakeSwitch = new javax.swing.JToggleButton();
         emergencyStop = new javax.swing.JButton();
-        stateDiagramPanel = new javax.swing.JPanel();
+        stateDiagramPanel = new StateMachineDiagram();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -212,7 +211,7 @@ public class ControlPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GCPanel().setVisible(true);
+                new ControlPanel().setVisible(true);
             }
         });
     }
@@ -242,6 +241,11 @@ public class ControlPanel extends javax.swing.JFrame {
         }
         return ~result;
     }
+    
+//    public void updateStateDiagramDisplay(){
+//        stateDiagramPanel.updateState(getState());
+//    }
+    
     public float getSlider() {
         return (float) (controlLever.getValue() / 100.0);
     }
@@ -257,39 +261,6 @@ public class ControlPanel extends javax.swing.JFrame {
     public boolean getPrepRecButton(){
         return (boolean) (prepRecButton.isSelected());
     }
-    
-//    public void setStateLed(int state) {
-//        while (getInitButton() == true){
-//            switch (state) {
-//                case 0: // prep
-//                    prepLed.setSelected(true);
-//                    prepLed.setForeground(Color.red);
-//
-//                    break;
-//                case 1: // armed
-//                    armedLed.setSelected(true);
-//                    armedLed.setForeground(Color.red);
-//                    break;
-//                case 2: // profile 1
-//                case 3: // profile 2
-//                    profileLed.setSelected(true);
-//                    profileLed.setForeground(Color.red);
-//                    break;
-//                case 4: // ramp
-//                    rampLed.setSelected(true);
-//                    rampLed.setForeground(Color.red);
-//                    break;
-//                case 5: // constant
-//                    constantLed.setSelected(true);
-//                    constantLed.setForeground(Color.red);
-//                    break;
-//                case 6: // recovery
-//                    recoveryLed.setSelected(true);
-//                    recoveryLed.setForeground(Color.red);
-//                    break;
-//            }
-//        }
-//    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JToggleButton brakeSwitch;
@@ -297,7 +268,7 @@ public class ControlPanel extends javax.swing.JFrame {
     private javax.swing.JButton emergencyStop;
     private javax.swing.JToggleButton gSwitch;
     private javax.swing.JToggleButton initButton;
-    private javax.swing.JPanel stateDiagramPanel;
+    private StateMachineDiagram stateDiagramPanel;
     private javax.swing.JButton odometerButton;
     private javax.swing.JToggleButton prepRecButton;
     private javax.swing.JToggleButton sasSwitch;

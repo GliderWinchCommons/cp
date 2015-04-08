@@ -27,6 +27,7 @@ import javax.xml.bind.DatatypeConverter;
 /*
  *   Decode methods for extracting data from payload extneded by
  *   @author gsm
+     @modifications: Johnny White
  *
  */
 public class CanCnvt

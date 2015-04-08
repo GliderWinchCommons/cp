@@ -29,8 +29,9 @@ public class GlassControlPanel
     static final int PARAM_REQUEST_MESSAGE_ID    = 312 * ID_OFFSET;    // 0x270    
     static final int CP_CONTROL_LEVER_RMT        = 328 * ID_OFFSET;    // 0x290
     static final int CP_CONTROL_LEVER_LCL        = 329 * ID_OFFSET;    // 0x292
-    static final int CP_CONTROL_LEVER_INPUTS_RMT = 330 * ID_OFFSET;    // 0x294
-    static final int CP_CONTROL_LEVER_INPUTS_LCL = 331 * ID_OFFSET;    // 0x296
+    static final int CP_CONTROL_PANEL_INPUTS_RMT = 330 * ID_OFFSET;    // 0x294
+    static final int CP_CONTROL_PANEL_INPUTS_LCL = 331 * ID_OFFSET;    // 0x296
+    static final int CP_CONTROL_PANEL_OUTPUTS    = 336 * ID_OFFSET;    // 0x2a0
     static final int CONTROL_LEVER_MESSAGE_ID    = 641 * ID_OFFSET;    // 0x502
     static final int HEARTBEAT_COUNT_ID           = 60;                 //%d only
     ////////////////////////////////////////////////
@@ -50,11 +51,13 @@ public class GlassControlPanel
         gcpMessageControlLever.dlc = 2;
         
         CanCnvt gcpMessageInputs = new CanCnvt();
-        gcpMessageInputs.id = CP_CONTROL_LEVER_INPUTS_RMT;
+        gcpMessageInputs.id = CP_CONTROL_PANEL_INPUTS_RMT;
         gcpMessageInputs.dlc = 2;
 
         CanCnvt canIn = new CanCnvt();
         String msg;
+        
+        GCPanel gc_panel = new GCPanel();
 
         ControlPanel cp = new ControlPanel();
         cp.setVisible(true);
@@ -96,9 +99,8 @@ public class GlassControlPanel
                         }
                         count = 0;
                         current_state = cp.getState();
-                        current_lever_position = cp.getSlider();
                     }
-                    else
+                        current_lever_position = cp.getSlider();
                     {
                         count++;
                     }

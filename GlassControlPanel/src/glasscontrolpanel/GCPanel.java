@@ -30,7 +30,8 @@ public class GCPanel extends javax.swing.JFrame {
         gSwitch = new javax.swing.JToggleButton();
         brakeSwitch = new javax.swing.JToggleButton();
         emergencyStop = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        stateDiagram = new javax.swing.JPanel();
+        lcdText = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,16 +78,16 @@ public class GCPanel extends javax.swing.JFrame {
         emergencyStop.setBackground(new java.awt.Color(255, 0, 51));
         emergencyStop.setText("Stop");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        stateDiagram.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout stateDiagramLayout = new javax.swing.GroupLayout(stateDiagram);
+        stateDiagram.setLayout(stateDiagramLayout);
+        stateDiagramLayout.setHorizontalGroup(
+            stateDiagramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        stateDiagramLayout.setVerticalGroup(
+            stateDiagramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 148, Short.MAX_VALUE)
         );
 
@@ -115,14 +116,14 @@ public class GCPanel extends javax.swing.JFrame {
                                 .addComponent(odometerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(brakeSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(gSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(stateDiagram, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stateDiagram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(emergencyStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +160,15 @@ public class GCPanel extends javax.swing.JFrame {
 
     private void gSwitchActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
-    }                                       
+    }
+//    private updateDisplay(){        
+//        if(launchState != internalMsg.getState()) {
+//            launchState = internalMsg.getState();
+//            stateMachinePanel12.updateState(launchState);
+//            tensionGraphPanel1.addStateMarker(launchState);
+//        }
+//        
+//    }
 
     /**
      * @param args the command line arguments
@@ -202,10 +211,11 @@ public class GCPanel extends javax.swing.JFrame {
     private javax.swing.JButton emergencyStop;
     private javax.swing.JToggleButton gSwitch;
     private javax.swing.JToggleButton initButton;
-    private javax.swing.JPanel jPanel2;
+    javax.swing.JPanel stateDiagram;
     private javax.swing.JButton odometerButton;
     private javax.swing.JToggleButton prepRecButton;
     private javax.swing.JToggleButton sasSwitch;
     private javax.swing.JButton tensionButton;
-    // End of variables declaration                   
+    private javax.swing.JTextArea lcdText;
+// End of variables declaration                   
 }
