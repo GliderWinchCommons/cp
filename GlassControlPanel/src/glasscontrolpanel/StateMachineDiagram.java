@@ -21,18 +21,32 @@ public class StateMachineDiagram extends javax.swing.JPanel {
     
     JTextField last = new JTextField();
     
-    public StateMachineDiagram() {;
-        initComponents();   
+    public StateMachineDiagram() {
+        statePics = new HashMap<>();
+        loadPictures();
+        initComponents();
     }
     
     public void updateState(int state){
         
-        stateLabel.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/DashboardInterface/images/" + stateIntToString(state) + ".png")));
-        
+        stateLabel.setIcon(statePics.get(state));
     }
     
-    public String stateIntToString(int state)
+    private void loadPictures()
+    {
+        statePics.put(0, new ImageIcon(getClass().getResource("/glasscontrolpanel/safe.png")));
+        statePics.put(1, new ImageIcon(getClass().getResource("/glasscontrolpanel/prep.png")));
+        statePics.put(2, new ImageIcon(getClass().getResource("/glasscontrolpanel/armed.png")));
+        statePics.put(3, new ImageIcon(getClass().getResource("/glasscontrolpanel/profile.png")));
+        statePics.put(4, new ImageIcon(getClass().getResource("/glasscontrolpanel/ramp.png")));
+        statePics.put(5, new ImageIcon(getClass().getResource("/glasscontrolpanel/constant.png")));
+        statePics.put(6, new ImageIcon(getClass().getResource("/glasscontrolpanel/recovery.png")));
+        statePics.put(7, new ImageIcon(getClass().getResource("/glasscontrolpanel/retrieve.png")));
+        statePics.put(14, new ImageIcon(getClass().getResource("/glasscontrolpanel/stop.png")));
+        statePics.put(15, new ImageIcon(getClass().getResource("/glasscontrolpanel/abort.png")));
+    }
+    
+/*    public String stateIntToString(int state)
     {
         switch(state)
         {
@@ -59,7 +73,7 @@ public class StateMachineDiagram extends javax.swing.JPanel {
             default:
                 return "";
         }
-    }
+    }*/
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,27 +83,30 @@ public class StateMachineDiagram extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         stateLabel = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        stateLabel.setIcon(statePics.get(0)); // NOI18N
+        //System.out.println(statePics.get(0).getIconHeight());
+        //System.out.println(statePics.get(0).getIconWidth());
+        add(stateLabel, BorderLayout.CENTER);
+
+        /*jToggleButton1 = new javax.swing.JToggleButton();
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
-        });
+        });*/
 
-        stateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/DashboardInterface/images/safe.png"))); // NOI18N
 
-        jToggleButton1.setText("random");
+        /*jToggleButton1.setText("random");
         jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jToggleButton1MouseClicked(evt);
             }
-        });
+        });*/
         
-        this.setBackground(Color.WHITE);
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        //setBackground(Color.BLUE);
+        /*javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +126,8 @@ public class StateMachineDiagram extends javax.swing.JPanel {
                 .addComponent(stateLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addContainerGap(23, Short.MAX_VALUE))
-        );
+        );*/
+        //add(new JLabel("HEY"), BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -123,5 +141,6 @@ public class StateMachineDiagram extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel stateLabel;
+    private HashMap<Integer,ImageIcon> statePics;
     // End of variables declaration//GEN-END:variables
 }

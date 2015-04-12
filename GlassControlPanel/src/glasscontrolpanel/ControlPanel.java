@@ -5,6 +5,8 @@
  */
 package glasscontrolpanel;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author Johnny White
@@ -97,9 +99,9 @@ public class ControlPanel extends javax.swing.JFrame {
         emergencyStop.setBackground(new java.awt.Color(255, 0, 51));
         emergencyStop.setText("Stop");
 
-        stateDiagramPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        //stateDiagramPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout stateDiagramPanelLayout = new javax.swing.GroupLayout(stateDiagramPanel);
+        /*javax.swing.GroupLayout stateDiagramPanelLayout = new javax.swing.GroupLayout(stateDiagramPanel);
         stateDiagramPanel.setLayout(stateDiagramPanelLayout);
         stateDiagramPanelLayout.setHorizontalGroup(
             stateDiagramPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,10 +110,12 @@ public class ControlPanel extends javax.swing.JFrame {
         stateDiagramPanelLayout.setVerticalGroup(
             stateDiagramPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 148, Short.MAX_VALUE)
-        );
+        );*/
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        JPanel panel = new JPanel();
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
+        
+        panel.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -166,6 +170,7 @@ public class ControlPanel extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        getContentPane().add(panel);
         pack();
     }// </editor-fold>                        
 
