@@ -5,7 +5,7 @@
  */
 package glasscontrolpanel;
 
-import javax.swing.JPanel;
+import java.util.Arrays;
 
 /**
  *
@@ -43,15 +43,17 @@ public class ControlPanel extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        initButton = new javax.swing.JToggleButton();
+        sasSwitch = new javax.swing.JToggleButton();
         prepRecButton = new javax.swing.JToggleButton();
         controlLever = new javax.swing.JSlider();
         tensionButton = new javax.swing.JButton();
         odometerButton = new javax.swing.JButton();
-        sasSwitch = new javax.swing.JToggleButton();
+        initButton = new javax.swing.JToggleButton();
         gSwitch = new javax.swing.JToggleButton();
         brakeSwitch = new javax.swing.JToggleButton();
         emergencyStop = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        LED_Display = new javax.swing.JTextArea();
         stateDiagramPanel = new StateMachineDiagram();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,11 +113,11 @@ public class ControlPanel extends javax.swing.JFrame {
             stateDiagramPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 148, Short.MAX_VALUE)
         );*/
+        LED_Display.setColumns(20);
+        LED_Display.setRows(4);
 
-        JPanel panel = new JPanel();
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
-        
-        panel.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -124,14 +126,18 @@ public class ControlPanel extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 67, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(sasSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(initButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(initButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(emergencyStop, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(sasSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tensionButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(emergencyStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,32 +151,33 @@ public class ControlPanel extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addComponent(stateDiagramPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(emergencyStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(gSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(brakeSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tensionButton)
-                    .addComponent(odometerButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(initButton)
-                    .addComponent(prepRecButton)
-                    .addComponent(sasSwitch))
-                .addGap(26, 26, 26))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(controlLever, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(controlLever, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(stateDiagramPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(emergencyStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(gSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(11, 11, 11)
+                                        .addComponent(brakeSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(19, 19, 19)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tensionButton)
+                                    .addComponent(odometerButton)))
+                            .addComponent(jScrollPane1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sasSwitch)
+                            .addComponent(prepRecButton)
+                            .addComponent(initButton))))
                 .addContainerGap())
         );
 
-        getContentPane().add(panel);
         pack();
     }// </editor-fold>                        
 
@@ -198,7 +205,7 @@ public class ControlPanel extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if (true) {
-                    javax.swing.UIManager.setLookAndFeel("Metal");
+                    javax.swing.UIManager.setLookAndFeel("Nimbus");
                     break;
                 }
             }
@@ -220,6 +227,165 @@ public class ControlPanel extends javax.swing.JFrame {
             }
         });
     }
+    //pre: Assumes all ASCII inputs are 20 characters or less 
+    public void updateLCDDisplay(byte[] cb_input){
+        //Initialize rows
+        byte[] input            = new byte[8];
+        byte[] location         = new byte[1];
+        CanCnvt canIn           = new CanCnvt();
+        String msg              = new String();
+        int row_loc             = 0;
+        int col_loc             = 0;
+        int range_value         = 0;
+        String default_string   = "                    "; //row of twenty spaces
+        String row1             = default_string;
+        String row2             = default_string;
+        String row3             = default_string;
+        String row4             = default_string;
+        
+        //get ASCII inputs
+        if(cb_input.length <= input.length){
+            input = Arrays.copyOfRange(cb_input, 1, 8);
+            location = Arrays.copyOfRange(cb_input, 0, 0);
+        }
+        else{
+            System.out.println("Error: CanBus Message Size Error");
+        }
+        //Check the message's intended location        
+        //Check intended ROW
+        if(isBitSet(location[0], 5) && !isBitSet(location[0], 6) &&
+                !isBitSet(location[0], 7)){                         //001
+           row_loc = 1;
+        }
+        if(!isBitSet(location[0], 5) && isBitSet(location[0], 6) &&
+                !isBitSet(location[0], 7)){                         //010
+            row_loc = 2;
+        }
+        if(isBitSet(location[0], 5) && isBitSet(location[0], 6) &&
+                !isBitSet(location[0], 7)){                         //011
+            row_loc = 3;
+        }
+        if(!isBitSet(location[0], 5) && !isBitSet(location[0], 6) &&
+                isBitSet(location[0], 7)){                          //100
+            row_loc = 4;
+        }        
+        
+        
+        //check intended COLUMN
+        if(isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00001
+            col_loc = 1;
+        }
+        if(!isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00011
+            col_loc = 2;
+        }
+        if(isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                         //00011
+            col_loc = 3;
+        }
+        if(!isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00100
+            col_loc = 4;
+        }
+        if(isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00101
+            col_loc = 5;
+        }
+        if(!isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00110
+            col_loc = 6;
+        }
+        if(isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //00111
+            col_loc = 7;
+        }
+        if(!isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01000
+            col_loc = 8;
+        }
+        if(isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01001
+            col_loc = 9;
+        }
+        if(!isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01010
+            col_loc = 10;
+        }
+        if(isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01011
+            col_loc = 11;
+        }
+        if(!isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01100
+            col_loc = 12;
+        }
+        if(isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01101
+            col_loc = 13;
+        }
+        if(!isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01110
+            col_loc = 14;
+        }
+        if(isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && isBitSet(location[0], 3) &&
+                !isBitSet(location[0], 4)){                          //01111
+            col_loc = 15;
+        }
+        if(!isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                isBitSet(location[0], 4)){                          //10000
+            col_loc = 16;
+        }
+        if(isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                isBitSet(location[0], 4)){                          //10001
+            col_loc = 17;
+        }
+        if(!isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                isBitSet(location[0], 4)){                          //10010
+            col_loc = 18;
+        }
+        if(isBitSet(location[0], 0) && isBitSet(location[0], 1) &&
+                !isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                isBitSet(location[0], 4)){                          //10011
+            col_loc = 19;
+        }
+        if(!isBitSet(location[0], 0) && !isBitSet(location[0], 1) &&
+                isBitSet(location[0], 2) && !isBitSet(location[0], 3) &&
+                isBitSet(location[0], 4)){                          //10100
+            col_loc = 20;
+        }
+    for(int i = 0; i < input.length; i++){
+        if (input[i] > 0){
+            msg += ((char) input[i]);
+        }
+    range_value = row_loc * col_loc;
+    LED_Display.replaceRange(msg, range_value, range_value);    
+    }
+    }
+    
+    private static Boolean isBitSet(byte b, int bit)
+    {
+        return (b & (1 << bit)) != 0;
+    }
+
     public int getGCPInteraction() {
         int result = 0x0000;
         if (getSlider() < 0.02)
@@ -268,15 +434,17 @@ public class ControlPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JTextArea LED_Display;
     private javax.swing.JToggleButton brakeSwitch;
     private javax.swing.JSlider controlLever;
     private javax.swing.JButton emergencyStop;
     private javax.swing.JToggleButton gSwitch;
     private javax.swing.JToggleButton initButton;
-    private StateMachineDiagram stateDiagramPanel;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton odometerButton;
     private javax.swing.JToggleButton prepRecButton;
     private javax.swing.JToggleButton sasSwitch;
+    private javax.swing.JPanel stateDiagramPanel;
     private javax.swing.JButton tensionButton;
     // End of variables declaration                       
 }
