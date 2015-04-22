@@ -376,10 +376,10 @@ public class ControlPanel extends javax.swing.JFrame {
         if (input[i] > 0){
             msg += ((char) input[i]);
         }
+    }
     range_value = row_loc * col_loc;
     LED_Display.replaceRange(msg, range_value, range_value);    
-    }
-    }
+}
     
     private static Boolean isBitSet(byte b, int bit)
     {
