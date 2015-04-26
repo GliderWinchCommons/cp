@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import javax.swing.JToggleButton;
 /**
  * @author Johnny White
  * Modifications by Jacob Troxel
@@ -98,7 +99,6 @@ public class GlassControlPanel
                                 outstream.flush();
                                 break;
                             case STATE_MESSAGE_ID:
-                                System.out.println("state");
                                 int currentState = canIn.get_byte(0) & 0x1f;
                                 cp.switchState(currentState);
                         }

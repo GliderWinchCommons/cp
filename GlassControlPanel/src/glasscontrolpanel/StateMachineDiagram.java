@@ -29,6 +29,18 @@ public class StateMachineDiagram extends javax.swing.JPanel {
         stateLabel.setIcon(statePics.get(state));
     }
     
+    private ImageIcon getScaledImage(ImageIcon img, int w)
+    {
+        float ratio = (float)(w) / img.getIconWidth();
+        int h = (int) (img.getIconHeight() * ratio);
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(img.getImage(), 0, 0, w, h, null);
+        g2.dispose();
+        return new ImageIcon(resizedImg);
+    }
+    
     private void loadPictures()
     {
         statePics.put(0, new ImageIcon(getClass().getResource("safe.png")));
