@@ -35,7 +35,9 @@ public class GlassControlPanel
     static final int CONTROL_LEVER_MESSAGE_ID    = 641 * ID_OFFSET;    // 0x502
     static final int HEARTBEAT_COUNT_ID           = 60;                 //%d only
     ////////////////////////////////////////////////
-    static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    //static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    static final String HUBSERVER_ADDRESS = "127.0.0.1";       // GeorgeHUB-SERVER
+
     static final int HUBSERVER_PORT = 32123;
     ////////////////////////////////////////////////
     //
