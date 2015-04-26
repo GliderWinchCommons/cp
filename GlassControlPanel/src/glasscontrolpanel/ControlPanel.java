@@ -25,7 +25,12 @@ public class ControlPanel extends javax.swing.JFrame {
     static final int PB_ARM         = 1 << 13;      // active low
     static final int PB_PREP        = 1 << 12;      // active low
     static final int CL_RST_NO      = 1 << 11;      // low at rest
-    static final int CL_FS_NO       = 1 << 8;      // low at full scale
+    static final int CL_FS_NO       = 1 << 8;       // low at full scale
+    static final int PB_0_TENSION   = 1 << 4;       // active low
+    static final int PB_0_ODOMETER  = 1 << 3;       // active low
+    static final int PB_BRAKE       = 1 << 2;       // active low
+    static final int PB_GUILLOTINE  = 1 << 1;       // active low
+    static final int SW_EMERGENCY   = 1 << 0;       // active low
 
     /**
      * Creates new form controlPanel
@@ -44,25 +49,25 @@ public class ControlPanel extends javax.swing.JFrame {
     private void initComponents() {
 
         sasSwitch = new javax.swing.JToggleButton();
-        prepRecButton = new javax.swing.JToggleButton();
+        prepRecButton = new javax.swing.JButton();
         controlLever = new javax.swing.JSlider();
         tensionButton = new javax.swing.JButton();
         odometerButton = new javax.swing.JButton();
-        initButton = new javax.swing.JToggleButton();
-        gSwitch = new javax.swing.JToggleButton();
-        brakeSwitch = new javax.swing.JToggleButton();
-        emergencyStop = new javax.swing.JButton();
+        armDisarmButton = new javax.swing.JButton();
+        gSwitch = new javax.swing.JButton();
+        brakeSwitch = new javax.swing.JButton();
+        emergencyStop = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         LED_Display = new javax.swing.JTextArea();
         stateDiagramPanel = new StateMachineDiagram();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        initButton.setBackground(new java.awt.Color(255, 0, 0));
-        initButton.setText("Arm/Disarm");
-        initButton.addActionListener(new java.awt.event.ActionListener() {
+        armDisarmButton.setBackground(new java.awt.Color(255, 0, 0));
+        armDisarmButton.setText("Arm/Disarm");
+        armDisarmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                initButtonActionPerformed(evt);
+                armDisarmButtonActionPerformed(evt);
             }
         });
 
@@ -129,9 +134,9 @@ public class ControlPanel extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(initButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(sasSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sasSwitch, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(armDisarmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -174,14 +179,14 @@ public class ControlPanel extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sasSwitch)
                             .addComponent(prepRecButton)
-                            .addComponent(initButton))))
+                            .addComponent(armDisarmButton))))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void initButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    private void armDisarmButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     }                                          
 
@@ -210,13 +215,9 @@ public class ControlPanel extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GCPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -384,45 +385,63 @@ public class ControlPanel extends javax.swing.JFrame {
     private static Boolean isBitSet(byte b, int bit)
     {
         return (b & (1 << bit)) != 0;
+        //shouldn't this just be:
+        //return b & (1 << bit)?  this is basic logic...
     }
 
     public int getGCPInteraction() {
         int result = 0x0000;
         if (getSlider() < 0.02)
         {
-            result += CL_RST_NO;
+            result |= CL_RST_NO;
         }
         if (getSlider() > 0.98)
         {
-            result += CL_FS_NO;
+            result |= CL_FS_NO;
         }
-        if (initButton.isSelected())
+        if (armDisarmButton.getModel().isPressed())
         {
-            result += PB_ARM;
+            result |= PB_ARM;
         }
-        if (prepRecButton.isSelected())
+        if (prepRecButton.getModel().isPressed())
         {
-            result += PB_PREP;
+            result |= PB_PREP;
         }
         if (sasSwitch.isSelected())
         {
-            result += SW_ACTIVE;
+            result |= SW_ACTIVE;
         } else {
-            result += SW_SAFE;
+            result |= SW_SAFE;
         }
+        if (tensionButton.getModel().isPressed())
+        {
+            result |= PB_0_TENSION;
+        }
+        if (odometerButton.getModel().isPressed())
+        {
+            result |= PB_0_ODOMETER;
+        }
+        if (brakeSwitch.getModel().isPressed())
+        {
+            result |= PB_BRAKE;
+        }
+        if (gSwitch.getModel().isPressed())
+        {
+            result |= PB_GUILLOTINE;
+        }
+        if (emergencyStop.isSelected())
+        {
+            result |= SW_EMERGENCY;
+        }        
         return ~result;
     }
-    
-//    public void updateStateDiagramDisplay(){
-//        stateDiagramPanel.updateState(getState());
-//    }
     
     public float getSlider() {
         return (float) (controlLever.getValue() / 100.0);
     }
     
-    public boolean getInitButton(){
-        return (boolean) (initButton.isSelected());
+    public boolean getArmDisarmButton(){
+        return (boolean) (armDisarmButton.isSelected());
     }
     
     public boolean getsasSwitch(){
@@ -432,19 +451,24 @@ public class ControlPanel extends javax.swing.JFrame {
     public boolean getPrepRecButton(){
         return (boolean) (prepRecButton.isSelected());
     }
+    
+    public void switchState(int state)
+    {
+        stateDiagramPanel.updateState(state);
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JTextArea LED_Display;
-    private javax.swing.JToggleButton brakeSwitch;
+    private javax.swing.JButton brakeSwitch;
     private javax.swing.JSlider controlLever;
-    private javax.swing.JButton emergencyStop;
-    private javax.swing.JToggleButton gSwitch;
-    private javax.swing.JToggleButton initButton;
+    private javax.swing.JToggleButton emergencyStop;
+    private javax.swing.JButton gSwitch;
+    private javax.swing.JButton armDisarmButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton odometerButton;
-    private javax.swing.JToggleButton prepRecButton;
+    private javax.swing.JButton prepRecButton;
     private javax.swing.JToggleButton sasSwitch;
-    private javax.swing.JPanel stateDiagramPanel;
+    private StateMachineDiagram stateDiagramPanel;
     private javax.swing.JButton tensionButton;
     // End of variables declaration                       
 }
