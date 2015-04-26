@@ -88,7 +88,7 @@ public class GlassControlPanel
                     {
                         canIn.convert_msgtobin(msg);
 
-                        switch (canIn.id)
+                        switch (canIn.id) 
                         {
                             case TIME_MESSAGE_ID:
                                 gcpMessageControlLever.set_halffloat(cp.getSlider(), 0);
