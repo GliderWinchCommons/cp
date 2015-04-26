@@ -24,23 +24,23 @@ public class StateMachineDiagram extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void updateState(int state){
-        
+    public void updateState(int state)
+    {
         stateLabel.setIcon(statePics.get(state));
     }
     
     private void loadPictures()
     {
-        statePics.put(0, new ImageIcon(getClass().getResource("/glasscontrolpanel/safe.png")));
-        statePics.put(1, new ImageIcon(getClass().getResource("/glasscontrolpanel/prep.png")));
-        statePics.put(2, new ImageIcon(getClass().getResource("/glasscontrolpanel/armed.png")));
-        statePics.put(3, new ImageIcon(getClass().getResource("/glasscontrolpanel/profile.png")));
-        statePics.put(4, new ImageIcon(getClass().getResource("/glasscontrolpanel/ramp.png")));
-        statePics.put(5, new ImageIcon(getClass().getResource("/glasscontrolpanel/constant.png")));
-        statePics.put(6, new ImageIcon(getClass().getResource("/glasscontrolpanel/recovery.png")));
-        statePics.put(7, new ImageIcon(getClass().getResource("/glasscontrolpanel/retrieve.png")));
-        statePics.put(14, new ImageIcon(getClass().getResource("/glasscontrolpanel/stop.png")));
-        statePics.put(15, new ImageIcon(getClass().getResource("/glasscontrolpanel/abort.png")));
+        statePics.put(0, new ImageIcon(getClass().getResource("safe.png")));
+        statePics.put(1, new ImageIcon(getClass().getResource("prep.png")));
+        statePics.put(2, new ImageIcon(getClass().getResource("armed.png")));
+        statePics.put(3, new ImageIcon(getClass().getResource("profile.png")));
+        statePics.put(4, new ImageIcon(getClass().getResource("ramp.png")));
+        statePics.put(5, new ImageIcon(getClass().getResource("constant.png")));
+        statePics.put(6, new ImageIcon(getClass().getResource("recovery.png")));
+        statePics.put(7, new ImageIcon(getClass().getResource("retrieve.png")));
+        statePics.put(14, new ImageIcon(getClass().getResource("stop.png")));
+        statePics.put(15, new ImageIcon(getClass().getResource("abort.png")));
     }
     
     @SuppressWarnings("unchecked")
@@ -64,4 +64,5 @@ public class StateMachineDiagram extends javax.swing.JPanel {
     private javax.swing.JLabel stateLabel;
     private HashMap<Integer,ImageIcon> statePics;
     // End of variables declaration//GEN-END:variables
+
 }

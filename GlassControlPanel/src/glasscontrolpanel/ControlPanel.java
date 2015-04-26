@@ -413,10 +413,6 @@ public class ControlPanel extends javax.swing.JFrame {
         return ~result;
     }
     
-//    public void updateStateDiagramDisplay(){
-//        stateDiagramPanel.updateState(getState());
-//    }
-    
     public float getSlider() {
         return (float) (controlLever.getValue() / 100.0);
     }
@@ -432,6 +428,11 @@ public class ControlPanel extends javax.swing.JFrame {
     public boolean getPrepRecButton(){
         return (boolean) (prepRecButton.isSelected());
     }
+    
+    public void switchState(int state)
+    {
+        stateDiagramPanel.updateState(state);
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JTextArea LED_Display;
@@ -444,7 +445,7 @@ public class ControlPanel extends javax.swing.JFrame {
     private javax.swing.JButton odometerButton;
     private javax.swing.JToggleButton prepRecButton;
     private javax.swing.JToggleButton sasSwitch;
-    private javax.swing.JPanel stateDiagramPanel;
+    private StateMachineDiagram stateDiagramPanel;
     private javax.swing.JButton tensionButton;
     // End of variables declaration                       
 }

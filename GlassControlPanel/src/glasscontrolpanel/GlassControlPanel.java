@@ -82,10 +82,10 @@ public class GlassControlPanel
                 } 
                 else
                 {
-                    if( HEARTBEAT_COUNT_ID - count == 0 ||
+                    /*if( HEARTBEAT_COUNT_ID - count == 0 ||
                         cp.getState() != current_state ||
                         cp.getSlider() != current_lever_position)
-                    {
+                    {*/
                         canIn.convert_msgtobin(msg);
 
                         switch (canIn.id) 
@@ -96,14 +96,19 @@ public class GlassControlPanel
                                 outstream.write(gcpMessageControlLever.msg_prep());
                                 outstream.write(gcpMessageInputs.msg_prep());
                                 outstream.flush();
+                                break;
+                            case STATE_MESSAGE_ID:
+                                System.out.println("state");
+                                int currentState = canIn.get_byte(0) & 0x1f;
+                                cp.switchState(currentState);
                         }
                         count = 0;
                         current_state = cp.getState();
-                    }
+                    /*}
                         current_lever_position = cp.getSlider();
                     {
                         count++;
-                    }
+                    }*/
                 }
             }
         } 
