@@ -94,7 +94,6 @@ public class GlassControlPanel
                         current_sw = (short) cp.getGCPInteraction();
                         if (--countSW <= 0
                                 || current_sw != prev_sw) {
-                            System.out.println("Switch Mesage");
                             gcpMessageInputs.set_short(current_sw, 0);
                             outstream.write(gcpMessageInputs.msg_prep());
                             prev_sw = current_sw;
@@ -104,7 +103,6 @@ public class GlassControlPanel
                         if (--countCL <= 0 
                                 || Math.abs(current_CL - prev_CL)
                                 >= CL_DELTA_TOL) {
-                            System.out.println("Control Lever Mesage");
                             gcpMessageControlLever.set_halffloat(current_CL, 0);                            
                             outstream.write(gcpMessageControlLever.msg_prep()); 
                             prev_CL = current_CL;
