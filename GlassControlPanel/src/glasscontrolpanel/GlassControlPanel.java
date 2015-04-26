@@ -34,9 +34,14 @@ public class GlassControlPanel
     static final int CP_CONTROL_PANEL_INPUTS_LCL = 331 * ID_OFFSET;    // 0x296
     static final int CP_CONTROL_PANEL_OUTPUTS    = 336 * ID_OFFSET;    // 0x2a0
     static final int CONTROL_LEVER_MESSAGE_ID    = 641 * ID_OFFSET;    // 0x502
-    static final int HEARTBEAT_COUNT_ID           = 60;                 //%d only
+    
+    static final int CL_HEARTBEAT_COUNT = 60;  //  control lever heartbeat count
+    static final int SW_HEARTBEAT_COUNT = 51;  //  switch heartbeat count 
+    static final float CL_DELTA_TOL = 0.005f;
     ////////////////////////////////////////////////
-    static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    //static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    static final String HUBSERVER_ADDRESS = "127.0.0.1";       // GeorgeHUB-SERVER
+
     static final int HUBSERVER_PORT = 32123;
     ////////////////////////////////////////////////
     //
@@ -58,14 +63,15 @@ public class GlassControlPanel
         CanCnvt canIn = new CanCnvt();
         String msg;
         
-        GCPanel gc_panel = new GCPanel();
-
         ControlPanel cp = new ControlPanel();
         cp.setVisible(true);
 
         float current_lever_position = cp.getSlider();
-        int current_state = cp.getState();
-        int lastMessage;
+        short prev_sw = -1;
+        short current_sw;
+        float prev_CL = 0;
+        float current_CL;
+        //int lastMessage;
         
         try
         {            
@@ -74,16 +80,39 @@ public class GlassControlPanel
 
             BufferedReader instream = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             OutputStreamWriter outstream = new OutputStreamWriter(connection.getOutputStream());
-            int count = 0;
+            int countCL = 0;
+            int countSW = 0;
             while (true)
             {
                 if ((msg = instream.readLine()) == null)
                 {
                     System.out.println("Null message received");
                 } 
-                else
-                {
-                    /*if( HEARTBEAT_COUNT_ID - count == 0 ||
+                else {
+                    canIn.convert_msgtobin(msg);
+                    if (canIn.id == TIME_MESSAGE_ID) {
+                        current_sw = (short) cp.getGCPInteraction();
+                        if (--countSW <= 0
+                                || current_sw != prev_sw) {
+                            System.out.println("Switch Mesage");
+                            gcpMessageInputs.set_short(current_sw, 0);
+                            outstream.write(gcpMessageInputs.msg_prep());
+                            prev_sw = current_sw;
+                            countSW = SW_HEARTBEAT_COUNT;
+                        }
+                        current_CL = cp.getSlider();
+                        if (--countCL <= 0 
+                                || Math.abs(current_CL - prev_CL)
+                                >= CL_DELTA_TOL) {
+                            System.out.println("Control Lever Mesage");
+                            gcpMessageControlLever.set_halffloat(current_CL, 0);                            
+                            outstream.write(gcpMessageControlLever.msg_prep()); 
+                            prev_CL = current_CL;
+                            countCL = CL_HEARTBEAT_COUNT;
+                        }
+                        outstream.flush();
+                    }                    
+                    /*    if( HEARTBEAT_COUNT_ID - count == 0 ||
                         cp.getState() != current_state ||
                         cp.getSlider() != current_lever_position)
                     {*/
@@ -102,8 +131,8 @@ public class GlassControlPanel
                                 int currentState = canIn.get_byte(0) & 0x1f;
                                 cp.switchState(currentState);
                         }
-                        count = 0;
-                        current_state = cp.getState();
+                        //count = 0;
+                        //current_state = cp.getState();
                     /*}
                         current_lever_position = cp.getSlider();
                     {
