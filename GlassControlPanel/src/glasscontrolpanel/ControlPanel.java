@@ -5,6 +5,8 @@
  */
 package glasscontrolpanel;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -80,7 +82,11 @@ public class ControlPanel extends javax.swing.JFrame {
 
         tensionButton.setBackground(new java.awt.Color(255, 102, 0));
         tensionButton.setText("Zero Tension");
-
+        tensionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zeroTensionButtonActionPerformed(evt);
+            }
+        });
         odometerButton.setBackground(new java.awt.Color(255, 102, 0));
         odometerButton.setText("Zero Odometer");
         odometerButton.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +198,16 @@ public class ControlPanel extends javax.swing.JFrame {
 
     private void odometerButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
-    }                                              
+    }   
+    
+    private void zeroTensionButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        // TODO add your handling code here:
+        try {
+            writer.write("Message for the master controller");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    } 
 
     private void gSwitchActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
@@ -456,6 +471,11 @@ public class ControlPanel extends javax.swing.JFrame {
     {
         stateDiagramPanel.updateState(state);
     }
+    
+    public void setWriter(BufferedWriter g)
+    {
+        writer = g;
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JTextArea LED_Display;
@@ -470,5 +490,6 @@ public class ControlPanel extends javax.swing.JFrame {
     private javax.swing.JToggleButton sasSwitch;
     private StateMachineDiagram stateDiagramPanel;
     private javax.swing.JButton tensionButton;
+    private BufferedWriter writer;
     // End of variables declaration                       
 }
