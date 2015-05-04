@@ -1,11 +1,14 @@
 package glasscontrolpanel;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JToggleButton;
 /**
  * @author Johnny White
@@ -47,8 +50,8 @@ public class GlassControlPanel
     static final int SW_HEARTBEAT_COUNT = 51;  //  switch heartbeat count 
     static final float CL_DELTA_TOL = 0.005f;
     ////////////////////////////////////////////////
-    //static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
-    static final String HUBSERVER_ADDRESS = "127.0.0.1";       // GeorgeHUB-SERVER
+    static final String HUBSERVER_ADDRESS = "147.222.165.75";       //HUB-SERVER
+    //static final String HUBSERVER_ADDRESS = "127.0.0.1";       // GeorgeHUB-SERVER
 
     static final int HUBSERVER_PORT = 32123;
     ////////////////////////////////////////////////
@@ -58,6 +61,8 @@ public class GlassControlPanel
     //        and reply with two of our own.
     //
     ////////////////////////////////////////////////
+    private static BufferedWriter writer;
+    
     public static void main(String args[]) throws InterruptedException
     {
         CanCnvt gcpMessageControlLever = new CanCnvt();
@@ -98,6 +103,9 @@ public class GlassControlPanel
 
             BufferedReader instream = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             OutputStreamWriter outstream = new OutputStreamWriter(connection.getOutputStream());
+            writer = new BufferedWriter(outstream);
+            cp.setWriter(writer);
+            System.out.println("Connected");
             int countCL = 0;
             int countSW = 0;
             while (true)
